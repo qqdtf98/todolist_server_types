@@ -4,11 +4,10 @@ import express from 'express'
 import getUserData from './server/getUserData'
 
 const app = express()
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/user/get', function (req: express.Request, res: Express.Response) {
+app.get('/user/get', function (req: express.Request, res: express.Response) {
   getUserData(res, (req.query as unknown) as Query)
 })
 
