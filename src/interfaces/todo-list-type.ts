@@ -8,3 +8,8 @@ export interface UserData {
   email: string
   name: string
 }
+
+export interface TodoUser {
+  userId: string
+  listType: string
+}
