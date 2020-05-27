@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var addTodoDoneList_1 = require("./server/addTodoDoneList");
 var body_parser_1 = __importDefault(require("body-parser"));
+var changeTodoDoneList_1 = require("./server/changeTodoDoneList");
 var cors_1 = __importDefault(require("cors"));
 var deleteTodoDoneList_1 = require("./server/deleteTodoDoneList");
 var express_1 = __importDefault(require("express"));
@@ -29,6 +30,9 @@ app.post('/list/delete', function (req, res) {
 });
 app.post('/list/update', function (req, res) {
     updateTodoDoneList_1.updateTodoDoneList(res, req.body.data);
+});
+app.post('/list/change', function (req, res) {
+    changeTodoDoneList_1.changeTodoDoneList(res, req.body.data);
 });
 app.listen(80, function () {
     console.log('Server is running...');

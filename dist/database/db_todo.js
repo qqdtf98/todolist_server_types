@@ -112,5 +112,77 @@ var todoData = {
             });
         });
     },
+    changeList: function (query) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                // eslint-disable-next-line no-async-promise-executor
+                return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
+                        var sql, movedData, _a, _b, _c, _d, date, dateStr, newState, results, todo_list, i, done_list, i, newLists;
+                        return __generator(this, function (_e) {
+                            switch (_e.label) {
+                                case 0:
+                                    sql = "select * from " + query.before + " where id = " + query.id;
+                                    _b = (_a = JSON).parse;
+                                    _d = (_c = JSON).stringify;
+                                    return [4 /*yield*/, db_custom_1.default.query(sql)];
+                                case 1:
+                                    movedData = _b.apply(_a, [_d.apply(_c, [_e.sent()])])[0];
+                                    sql = "delete from " + query.before + " where id = " + query.id;
+                                    return [4 /*yield*/, db_custom_1.default.query(sql)];
+                                case 2:
+                                    _e.sent();
+                                    date = new Date(movedData.date);
+                                    dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+                                    if (query.after === 'todo_list') {
+                                        newState = 0;
+                                    }
+                                    else if (query.after === 'done_list') {
+                                        newState = 1;
+                                    }
+                                    if (!(query.type === 'todo')) return [3 /*break*/, 4];
+                                    sql = "insert into " + query.after + "(id,title,contents,date,state,importance,todoId) values (" + movedData.id + ",'" + movedData.title + "','" + movedData.contents + "','" + dateStr + "','" + newState + "','" + movedData.importance + "'," + movedData.doneId + ")";
+                                    return [4 /*yield*/, db_custom_1.default.query(sql)];
+                                case 3:
+                                    _e.sent();
+                                    return [3 /*break*/, 6];
+                                case 4:
+                                    if (!(query.type === 'done')) return [3 /*break*/, 6];
+                                    sql = "insert into " + query.after + "(id,title,contents,date,state,importance,doneId) values (" + movedData.id + ",'" + movedData.title + "','" + movedData.contents + "','" + dateStr + "','" + newState + "','" + movedData.importance + "'," + movedData.todoId + ")";
+                                    return [4 /*yield*/, db_custom_1.default.query(sql)];
+                                case 5:
+                                    _e.sent();
+                                    _e.label = 6;
+                                case 6:
+                                    console.log(sql);
+                                    sql = "select * from todo_list where todoId = " + query.userId;
+                                    return [4 /*yield*/, db_custom_1.default.query(sql)];
+                                case 7:
+                                    results = _e.sent();
+                                    console.log(results);
+                                    todo_list = JSON.parse(JSON.stringify(results));
+                                    for (i = 0; i < todo_list.length; i++) {
+                                        todo_list[i].date = todo_list[i].date.split('T')[0];
+                                    }
+                                    sql = "select * from done_list where doneId = " + query.userId;
+                                    return [4 /*yield*/, db_custom_1.default.query(sql)];
+                                case 8:
+                                    results = _e.sent();
+                                    done_list = JSON.parse(JSON.stringify(results));
+                                    for (i = 0; i < done_list.length; i++) {
+                                        done_list[i].date = done_list[i].date.split('T')[0];
+                                    }
+                                    newLists = {
+                                        todo: todo_list,
+                                        done: done_list,
+                                    };
+                                    resolve(newLists);
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })];
+            });
+        });
+    },
 };
 exports.default = todoData;
