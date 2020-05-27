@@ -57,5 +57,60 @@ var todoData = {
             });
         });
     },
+    deleteList: function (query) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve) {
+                        var sql = "delete from " + query.table + " where id = " + query.index;
+                        db_custom_1.default.query(sql);
+                        sql = "select * from " + query.table + " where " + query.type + "Id = " + query.userId;
+                        console.log(sql);
+                        db_custom_1.default.query(sql).then(function (results) {
+                            var list = JSON.parse(JSON.stringify(results));
+                            for (var i = 0; i < list.length; i++) {
+                                list[i].date = list[i].date.split('T')[0];
+                            }
+                            resolve(list);
+                        });
+                    })];
+            });
+        });
+    },
+    addList: function (bodyData) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve) {
+                        var sql = "insert into todo_list (title,contents,date,state,importance,todoId) values ('" + bodyData.newContext.title + "','" + bodyData.newContext.contents + "','" + bodyData.newContext.date + "','" + bodyData.newContext.state + "','" + bodyData.newContext.importance + "'," + bodyData.userId + ") ";
+                        db_custom_1.default.query(sql);
+                        sql = "select * from todo_list where todoId = " + bodyData.userId;
+                        db_custom_1.default.query(sql).then(function (results) {
+                            var list = JSON.parse(JSON.stringify(results));
+                            for (var i = 0; i < list.length; i++) {
+                                list[i].date = list[i].date.split('T')[0];
+                            }
+                            resolve(list);
+                        });
+                    })];
+            });
+        });
+    },
+    updateList: function (query) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve) {
+                        var sql = "update " + query.table + " set " + query.key + " = '" + query.value + "' where id=" + query.index;
+                        db_custom_1.default.query(sql);
+                        sql = "select * from " + query.table + " where " + query.type + "Id = " + query.userId;
+                        db_custom_1.default.query(sql).then(function (results) {
+                            var list = JSON.parse(JSON.stringify(results));
+                            for (var i = 0; i < list.length; i++) {
+                                list[i].date = list[i].date.split('T')[0];
+                            }
+                            resolve(list);
+                        });
+                    })];
+            });
+        });
+    },
 };
 exports.default = todoData;
