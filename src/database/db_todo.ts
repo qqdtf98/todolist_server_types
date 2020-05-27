@@ -1,4 +1,10 @@
-import { AddTodoDone, TodoUser } from '../interfaces/todo-list-type'
+import {
+  AddTodoDone,
+  ChangeTodoDone,
+  ResDoneType,
+  ResTodoType,
+  TodoUser,
+} from '../interfaces/todo-list-type'
 
 import customCon from './db_custom'
 
@@ -83,59 +89,62 @@ const todoData = {
     })
   },
 
-  // changeList: async function (query) {
-  //   return new Promise(async (resolve) => {
-  //     let sql = `select * from ${query.before} where id = ${query.id}`
-  //     let movedData
+  changeList: async function (query: ChangeTodoDone) {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve) => {
+      let sql = `select * from ${query.before} where id = ${query.id}`
 
-  //     movedData = JSON.parse(JSON.stringify(await newCon.query(sql)))[0]
+      const movedData = JSON.parse(
+        JSON.stringify(await customCon.query(sql))
+      )[0]
 
-  //     sql = `delete from ${query.before} where id = ${query.id}`
-  //     await newCon.query(sql)
+      sql = `delete from ${query.before} where id = ${query.id}`
+      await customCon.query(sql)
 
-  //     const date = new Date(movedData.date)
-  //     const dateStr = `${date.getFullYear()}-${
-  //       date.getMonth() + 1
-  //     }-${date.getDate()}`
-  //     let newState
-  //     if (query.after === 'todo_list') {
-  //       newState = 0
-  //     } else if (query.after === 'done_list') {
-  //       newState = 1
-  //     }
-  //     if (query.type === 'todo') {
-  //       sql = `insert into ${query.after}(id,title,contents,date,state,importance,todoId) values (${movedData.id},'${movedData.title}','${movedData.contents}','${dateStr}','${newState}','${movedData.importance}',${movedData.doneId})`
-  //       await newCon.query(sql)
-  //     } else if (query.type === 'done') {
-  //       sql = `insert into ${query.after}(id,title,contents,date,state,importance,doneId) values (${movedData.id},'${movedData.title}','${movedData.contents}','${dateStr}','${newState}','${movedData.importance}',${movedData.todoId})`
-  //       await newCon.query(sql)
-  //     }
+      const date = new Date(movedData.date)
+      const dateStr = `${date.getFullYear()}-${
+        date.getMonth() + 1
+      }-${date.getDate()}`
+      let newState
+      if (query.after === 'todo_list') {
+        newState = 0
+      } else if (query.after === 'done_list') {
+        newState = 1
+      }
+      if (query.type === 'todo') {
+        sql = `insert into ${query.after}(id,title,contents,date,state,importance,todoId) values (${movedData.id},'${movedData.title}','${movedData.contents}','${dateStr}','${newState}','${movedData.importance}',${movedData.doneId})`
+        await customCon.query(sql)
+      } else if (query.type === 'done') {
+        sql = `insert into ${query.after}(id,title,contents,date,state,importance,doneId) values (${movedData.id},'${movedData.title}','${movedData.contents}','${dateStr}','${newState}','${movedData.importance}',${movedData.todoId})`
+        await customCon.query(sql)
+      }
 
-  //     console.log(sql)
+      console.log(sql)
 
-  //     sql = `select * from todo_list where todoId = ${query.userId}`
-  //     let results
-  //     let todo_list
-  //     results = await newCon.query(sql)
-  //     todo_list = JSON.parse(JSON.stringify(results))
-  //     for (let i = 0; i < todo_list.length; i++) {
-  //       todo_list[i].date = todo_list[i].date.split('T')[0]
-  //     }
+      sql = `select * from todo_list where todoId = ${query.userId}`
+      let results
 
-  //     sql = `select * from done_list where doneId = ${query.userId}`
-  //     let done_list
-  //     results = await newCon.query(sql)
-  //     done_list = JSON.parse(JSON.stringify(results))
-  //     for (let i = 0; i < done_list.length; i++) {
-  //       done_list[i].date = done_list[i].date.split('T')[0]
-  //     }
-  //     const newLists = {
-  //       todo: todo_list,
-  //       done: done_list,
-  //     }
-  //     resolve(newLists)
-  //   })
-  // },
+      results = await customCon.query(sql)
+      console.log(results)
+      const todo_list: ResTodoType[] = JSON.parse(JSON.stringify(results))
+      for (let i = 0; i < todo_list.length; i++) {
+        todo_list[i].date = todo_list[i].date.split('T')[0]
+      }
+
+      sql = `select * from done_list where doneId = ${query.userId}`
+
+      results = await customCon.query(sql)
+      const done_list: ResDoneType[] = JSON.parse(JSON.stringify(results))
+      for (let i = 0; i < done_list.length; i++) {
+        done_list[i].date = done_list[i].date.split('T')[0]
+      }
+      const newLists = {
+        todo: todo_list,
+        done: done_list,
+      }
+      resolve(newLists)
+    })
+  },
 }
 
 export default todoData

@@ -1,6 +1,7 @@
 import { Query } from './interfaces/todo-list-type'
 import { addTodoDoneList } from './server/addTodoDoneList'
 import bodyParser from 'body-parser'
+import { changeTodoDoneList } from './server/changeTodoDoneList'
 import cors from 'cors'
 import { deleteTodoDoneList } from './server/deleteTodoDoneList'
 import express from 'express'
@@ -37,6 +38,13 @@ app.post('/list/update', function (
   res: express.Response
 ) {
   updateTodoDoneList(res, req.body.data)
+})
+
+app.post('/list/change', function (
+  req: express.Request,
+  res: express.Response
+) {
+  changeTodoDoneList(res, req.body.data)
 })
 
 app.listen(80, function () {

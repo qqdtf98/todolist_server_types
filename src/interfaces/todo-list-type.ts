@@ -40,3 +40,31 @@ export interface UpdateTodoDone {
   key: string
   value: string
 }
+
+export interface ChangeTodoDone {
+  userId: string
+  before: string
+  after: string
+  id: number
+  type: string
+}
+
+export interface ResTodoType {
+  id: number
+  todoId: number
+  importance: string
+  title: string
+  contents: string
+  date: string
+  state: number
+}
+
+export interface ResDoneType {
+  id: number
+  doneId: number
+  importance: string
+  title: string
+  contents: string
+  date: string
+  state: number
+}
