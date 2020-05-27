@@ -27,3 +27,8 @@ export interface NewContentType {
   importance: string
 }
 
+export interface DeleteTodoDone {
+  userId: string
+  listType: string
+  index: number
+}
