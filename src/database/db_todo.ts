@@ -7,6 +7,22 @@ type GetData = {
   bodyData: TodoUser
 }
 
+type DeleteData = {
+  table: string
+  index: number
+  type: string
+  userId: string
+}
+
+type UpdateData = {
+  type: string
+  userId: string
+  table: string
+  key: string
+  value: string
+  index: number
+}
+
 const todoData = {
   getDataList: async function (data: GetData) {
     return new Promise((resolve) => {
@@ -21,21 +37,21 @@ const todoData = {
     })
   },
 
-  // deleteList: async function (query) {
-  //   return new Promise((resolve) => {
-  //     let sql = `delete from ${query.table} where id = ${query.index}`
-  //     connection.query(sql)
-  //     sql = `select * from ${query.table} where ${query.type}Id = ${query.userId}`
-  //     console.log(sql)
-  //     connection.query(sql, function (err, results, field) {
-  //       const list = JSON.parse(JSON.stringify(results))
-  //       for (let i = 0; i < list.length; i++) {
-  //         list[i].date = list[i].date.split('T')[0]
-  //       }
-  //       resolve(list)
-  //     })
-  //   })
-  // },
+  deleteList: async function (query: DeleteData) {
+    return new Promise((resolve) => {
+      let sql = `delete from ${query.table} where id = ${query.index}`
+      customCon.query(sql)
+      sql = `select * from ${query.table} where ${query.type}Id = ${query.userId}`
+      console.log(sql)
+      customCon.query(sql).then(function (results) {
+        const list = JSON.parse(JSON.stringify(results))
+        for (let i = 0; i < list.length; i++) {
+          list[i].date = list[i].date.split('T')[0]
+        }
+        resolve(list)
+      })
+    })
+  },
 
   addList: async function (bodyData: AddTodoDone) {
     return new Promise((resolve) => {
@@ -52,20 +68,20 @@ const todoData = {
     })
   },
 
-  // updateList: async function (query) {
-  //   return new Promise((resolve) => {
-  //     let sql = `update ${query.table} set ${query.key} = '${query.value}' where id=${query.index}`
-  //     connection.query(sql)
-  //     sql = `select * from ${query.table} where ${query.type}Id = ${query.userId}`
-  //     connection.query(sql, function (err, results, field) {
-  //       const list = JSON.parse(JSON.stringify(results))
-  //       for (let i = 0; i < list.length; i++) {
-  //         list[i].date = list[i].date.split('T')[0]
-  //       }
-  //       resolve(list)
-  //     })
-  //   })
-  // },
+  updateList: async function (query: UpdateData) {
+    return new Promise((resolve) => {
+      let sql = `update ${query.table} set ${query.key} = '${query.value}' where id=${query.index}`
+      customCon.query(sql)
+      sql = `select * from ${query.table} where ${query.type}Id = ${query.userId}`
+      customCon.query(sql).then(function (results) {
+        const list = JSON.parse(JSON.stringify(results))
+        for (let i = 0; i < list.length; i++) {
+          list[i].date = list[i].date.split('T')[0]
+        }
+        resolve(list)
+      })
+    })
+  },
 
   // changeList: async function (query) {
   //   return new Promise(async (resolve) => {

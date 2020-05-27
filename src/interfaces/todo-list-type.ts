@@ -32,3 +32,11 @@ export interface DeleteTodoDone {
   listType: string
   index: number
 }
+
+export interface UpdateTodoDone {
+  userId: string
+  listType: string
+  index: number
+  key: string
+  value: string
+}

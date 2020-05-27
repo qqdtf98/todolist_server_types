@@ -6,6 +6,7 @@ import { deleteTodoDoneList } from './server/deleteTodoDoneList'
 import express from 'express'
 import { getTodoDoneList } from './server/getTodoDoneList'
 import getUserData from './server/getUserData'
+import { updateTodoDoneList } from './server/updateTodoDoneList'
 
 const app = express()
 app.use(cors())
@@ -29,6 +30,13 @@ app.post('/list/delete', function (
   res: express.Response
 ) {
   deleteTodoDoneList(res, req.body.data)
+})
+
+app.post('/list/update', function (
+  req: express.Request,
+  res: express.Response
+) {
+  updateTodoDoneList(res, req.body.data)
 })
 
 app.listen(80, function () {
