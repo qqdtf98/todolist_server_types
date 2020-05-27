@@ -1,5 +1,7 @@
-import { TodoUser } from '../interfaces/todo-list-type'
+import { AddTodoDone, TodoUser } from '../interfaces/todo-list-type'
+
 import customCon from './db_custom'
+
 type GetData = {
   dbTable: string
   bodyData: TodoUser
@@ -35,20 +37,20 @@ const todoData = {
   //   })
   // },
 
-  // addList: async function (bodyData) {
-  //   return new Promise((resolve) => {
-  //     let sql = `insert into todo_list (title,contents,date,state,importance,todoId) values ('${bodyData.newContext.title}','${bodyData.newContext.contents}','${bodyData.newContext.date}','${bodyData.newContext.state}','${bodyData.newContext.importance}',${bodyData.userId}) `
-  //     connection.query(sql)
-  //     sql = `select * from todo_list where todoId = ${bodyData.userId}`
-  //     connection.query(sql, function (err, results, field) {
-  //       const list = JSON.parse(JSON.stringify(results))
-  //       for (let i = 0; i < list.length; i++) {
-  //         list[i].date = list[i].date.split('T')[0]
-  //       }
-  //       resolve(list)
-  //     })
-  //   })
-  // },
+  addList: async function (bodyData: AddTodoDone) {
+    return new Promise((resolve) => {
+      let sql = `insert into todo_list (title,contents,date,state,importance,todoId) values ('${bodyData.newContext.title}','${bodyData.newContext.contents}','${bodyData.newContext.date}','${bodyData.newContext.state}','${bodyData.newContext.importance}',${bodyData.userId}) `
+      customCon.query(sql)
+      sql = `select * from todo_list where todoId = ${bodyData.userId}`
+      customCon.query(sql).then(function (results) {
+        const list = JSON.parse(JSON.stringify(results))
+        for (let i = 0; i < list.length; i++) {
+          list[i].date = list[i].date.split('T')[0]
+        }
+        resolve(list)
+      })
+    })
+  },
 
   // updateList: async function (query) {
   //   return new Promise((resolve) => {

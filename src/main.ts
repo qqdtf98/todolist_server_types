@@ -1,4 +1,5 @@
 import { Query } from './interfaces/todo-list-type'
+import { addTodoDoneList } from './server/addTodoDoneList'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
@@ -15,6 +16,10 @@ app.get('/user/get', function (req: express.Request, res: express.Response) {
 })
 app.post('/list/get', function (req: express.Request, res: express.Response) {
   getTodoDoneList(res, req.body.data)
+})
+
+app.post('/list/add', function (req: express.Request, res: express.Response) {
+  addTodoDoneList(res, req.body.data)
 })
 
 app.listen(80, function () {

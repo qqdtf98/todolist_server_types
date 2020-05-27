@@ -13,3 +13,17 @@ export interface TodoUser {
   userId: string
   listType: string
 }
+
+export interface AddTodoDone {
+  userId: string
+  newContext: NewContentType
+}
+
+export interface NewContentType {
+  title: string
+  contents: string
+  date: string
+  state: number
+  importance: string
+}
+
